@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Laporan KOKOCII</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.20/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e, #3c3c3c);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 16px;
+        }
+        input, textarea {
+            width: calc(100% - 20px);
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        button {
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background: #e64a19;
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Form Laporan KOKOCII</h2>
+        <form id="reportForm">
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+            </div>
+            <div class="form-group">
+                <label for="laporan">Laporan:</label>
+                <textarea id="laporan" name="laporan" rows="5" placeholder="Tulis laporan Anda di sini..." required></textarea>
+            </div>
+            <button type="submit">Kirim Laporan</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.20/sweetalert2.all.min.js"></script>
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const nama = document.getElementById('nama').value;
+            const email = document.getElementById('email').value;
+            const laporan = document.getElementById('laporan').value;
+            
+            const botToken = '7804694472:AAEMFQl93uRGITzkKpPNqXxD03wrz0gXAXg';
+            const chatId = '6450551010';
+            const text = `Laporan Baru%0A%0ANama: ${nama}%0AEmail: ${email}%0ALaporan: ${laporan}`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${text}`;
+
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    Swal.fire('Sukses!', 'Laporan berhasil dikirim!', 'success');
+                    document.getElementById('reportForm').reset();
+                } else {
+                    Swal.fire('Error!', 'Gagal mengirim laporan.', 'error');
+                }
+            } catch (error) {
+                Swal.fire('Error!', 'Terjadi kesalahan jaringan.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
